@@ -1,0 +1,2 @@
+pyyaml==6.0; python_version >= "3.6"
+watchdog==2.1.6; python_version >= "3.6"

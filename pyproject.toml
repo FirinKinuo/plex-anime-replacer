@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "plex-anime-replacer"
+version = "0.0.0"
+description = "Replacer for names and locations of anime files downloaded from ru-fandub trackers"
+authors = ["Firin Kinuo <deals@fkinuo.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+PyYAML = "^6.0"
+watchdog = "^2.1.6"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.12.2"
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+pytest-mock = "^3.6.1"
+bandit = "^1.7.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
