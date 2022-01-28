@@ -3,5 +3,6 @@ debug: False
 log_level: error
 log_path: logs
 
-dir_downloaded_anime:
 dir_plex_anime_library:
+
+regexps_anime_data:
