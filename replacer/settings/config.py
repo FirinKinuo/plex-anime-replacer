@@ -33,7 +33,7 @@ LOG_PATH = Path(_config.get('log_path') or '', 'replacer.log')
 
 BACKUP_DIR = Path(_config.get('backup_dir')) if _config.get('backup_dir') else None
 
-DIR_PLEX_ANIME_LIBRARY = Path(_config.get('dir_plex_anime_library') if not IS_TEST else 'tests/testing_folders/anime')
+DIR_PLEX_ANIME_LIBRARY = Path(_config.get('dir_plex_anime_library'))
 
 REGEXPS_ANIME_DATA = _config.get('regexps_anime_data')
 
