@@ -1,20 +1,23 @@
 import pytest
 
 from replacer.filesystem import anime, movement
-from tests import consts
+from tests.unit.filesystem.fixtures import *
+from tests.unit.filesystem import AnimeProviders, AnimeFileType
 
 
-@pytest.fixture()
-def get_anime_data():
-    downloads_folder = consts.DOWNLOADED_ANIME_FOLDER
+@pytest.mark.parametrize("anime_provider", (AnimeProviders.ANILIBRIA,))
+@pytest.mark.parametrize('save_original', (True, False))
+def test_move_anime_to_plex_copy_mode(generate_anime_file, anime_provider, save_original):
+    generated_file = generate_anime_file(provider=anime_provider, file_type=AnimeFileType.SERIAL, season=False)
+    anime_file = anime.AnimeFile(
+        path=generated_file['path'],
+        name=generated_file['name'],
+        extension=generated_file['extension'],
+        season=int(generated_file['season']),
+        episode=generated_file['episode']
+    )
 
-    for anime_folder in downloads_folder.rglob("Fantasy Bishoujo *"):
-        downloaded_anime = anime.DownloadedAnime(directory=anime_folder)
-        return downloaded_anime.search_videos()
+    moved_anime = movement.move_anime_to_plex(anime_file=anime_file, save_original=save_original)
 
-
-def test_move_anime_to_plex(get_anime_data):
-    anime_files = get_anime_data
-
-    for anime_file in anime_files:
-        movement.move_anime_to_plex(anime_file=anime_file)
+    assert moved_anime.exists()
+    assert anime_file.path.exists() if save_original else not anime_file.path.exists()
