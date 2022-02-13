@@ -2,7 +2,7 @@ from pkg_resources import parse_requirements
 from setuptools import setup
 
 NAME = 'plex-anime-replacer'
-VERSION = '0.3.0'
+VERSION = '0.5.2'
 DESCRIPTION = 'Replacer for names and locations of anime files downloaded from ru-fandub trackers'
 MODULES = ['replacer', 'replacer.filesystem', 'replacer.settings']
 
