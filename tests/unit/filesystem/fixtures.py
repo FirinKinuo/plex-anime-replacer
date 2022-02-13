@@ -10,7 +10,7 @@ from tests.generators import random_int as rndint
 from tests.generators import random_string as rndstr
 from tests.unit.filesystem import AnimeProviders, AnimeFileType, AnimeMetaData
 
-__all__ = ['prepare_testing_folders', 'generate_anime_file']
+__all__ = ['prepare_testing_folders', 'generate_anime_file', 'generate_incorrect_anime_file_path']
 
 
 @pytest.fixture(scope="session")
@@ -62,3 +62,11 @@ def generate_anime_file(prepare_testing_folders) -> callable:
         return metadata
 
     return generate_anime_file_
+
+
+@pytest.fixture(scope="session")
+def generate_incorrect_anime_file_path(prepare_testing_folders) -> callable:
+    def generate_incorrect_anime_file_path_() -> Path:
+        return Path(rndstr(32))
+
+    return generate_incorrect_anime_file_path_

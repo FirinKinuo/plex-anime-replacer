@@ -57,11 +57,12 @@ def replace_anime_file(anime_file_path: Path, *args, **kwargs):
         use_symlink: bool - Use symlink instead of copy (Faster, but may not work on all OS)
     """
     if anime_file_path.exists() and anime_file_path.suffix in anime.VIDEO_FORMATS:
-        downloaded_anime = anime.DownloadedAnime(path=anime_file_path)
         try:
-            movement.move_anime_to_plex(anime_file=downloaded_anime.search_metadata(), save_original=save_original)
+            movement.move_anime_to_plex(anime_file=anime.AnimeFile(anime_path=anime_file_path), *args, **kwargs)
         except PermissionError:
             log.critical("Unable to move file, check permissions")
+        except ValueError as err:
+            log.error(err)
 
 
 if __name__ == "__main__":

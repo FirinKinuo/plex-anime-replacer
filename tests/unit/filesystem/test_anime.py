@@ -1,23 +1,9 @@
 import pytest
 
-from pathlib import Path
-
 from replacer.filesystem import anime
 
-
-from tests import consts
-from tests.generators import random_string as rndstr
 from tests.unit.filesystem import AnimeProviders, AnimeFileType
 from tests.unit.filesystem.fixtures import *
-
-
-def test_downloaded_anime_repr():
-    path_payload = Path(consts.DOWNLOADED_ANIME_FOLDER, rndstr(12))
-
-    downloaded_anime = anime.DownloadedAnime(path=path_payload)
-
-    assert isinstance(downloaded_anime, anime.DownloadedAnime)
-    assert str(downloaded_anime) == f"<Downloaded anime at {path_payload}>"
 
 
 @pytest.mark.parametrize("anime_provider", (AnimeProviders.ANILIBRIA,))
@@ -27,12 +13,10 @@ def test_downloaded_anime_repr():
      (AnimeFileType.SERIAL, True),
      (AnimeFileType.SPECIAL, False),
      (AnimeFileType.FUll_LENGTH, False)))
-def test_search_anime(generate_anime_file, anime_provider, file_type, season):
+def test_init_anime_file(generate_anime_file, anime_provider, file_type, season):
     anime_metadata = generate_anime_file(provider=anime_provider, file_type=file_type, season=season)
 
-    downloaded_anime = anime.DownloadedAnime(path=anime_metadata['path'])
-
-    anime_file = downloaded_anime.search_metadata()
+    anime_file = anime.AnimeFile(anime_path=anime_metadata['path'])
 
     assert isinstance(anime_file, anime.AnimeFile)
 
@@ -62,3 +46,10 @@ def test_search_anime(generate_anime_file, anime_provider, file_type, season):
         assert anime_file.extension == anime_metadata['extension']
 
         assert str(anime_file) == f"{anime_metadata['name'].replace('_', ' ')}.{anime_metadata['extension']}"
+
+
+def test_init_incorrect_anime_file(generate_incorrect_anime_file_path):
+    anime_path = generate_incorrect_anime_file_path()
+
+    with pytest.raises(ValueError):
+        anime.AnimeFile(anime_path=anime_path)
