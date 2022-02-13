@@ -31,8 +31,6 @@ DEBUG = bool(_config.get('debug')) or False
 LOG_LEVEL = logging.getLevelName((_config.get('log_level') if not DEBUG else 'debug').upper())
 LOG_PATH = Path(_config.get('log_path') or '', 'replacer.log')
 
-BACKUP_DIR = Path(_config.get('backup_dir')) if _config.get('backup_dir') else None
-
 DIR_PLEX_ANIME_LIBRARY = Path(_config.get('dir_plex_anime_library'))
 
 REGEXPS_ANIME_DATA = _config.get('regexps_anime_data')
