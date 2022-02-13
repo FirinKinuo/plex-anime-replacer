@@ -34,7 +34,7 @@ def init_args_parser() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "--use_symlink",
+        "--use-symlink",
         dest="use_symlink",
         help="Use symlink instead of copy (Faster, but may not work on all OS)",
         action='store_true',
