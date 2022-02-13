@@ -33,17 +33,28 @@ def init_args_parser() -> argparse.Namespace:
         required=False
     )
 
+    parser.add_argument(
+        "--use_symlink",
+        dest="use_symlink",
+        help="Use symlink instead of copy (Faster, but may not work on all OS)",
+        action='store_true',
+        required=False
+    )
+
     return parser.parse_args()
 
 
-def replace_anime_file(anime_file_path: Path, save_original: bool = True):
+def replace_anime_file(anime_file_path: Path, *args, **kwargs):
     """
     Move the specified anime file to the Plex library directory
     With a Plex-appropriate name replacement
 
     Args:
         anime_file_path: pathlib.Path - The path in the pathlib format to the anime file
-        save_original: bool - default: True - Keep original file when transferring? (Faster if not save)
+
+    Keyword Args:
+        save_original: bool - Keep original file when transferring? (Faster if not save)
+        use_symlink: bool - Use symlink instead of copy (Faster, but may not work on all OS)
     """
     if anime_file_path.exists() and anime_file_path.suffix in anime.VIDEO_FORMATS:
         downloaded_anime = anime.DownloadedAnime(path=anime_file_path)
@@ -53,23 +64,15 @@ def replace_anime_file(anime_file_path: Path, save_original: bool = True):
             log.critical("Unable to move file, check permissions")
 
 
-def replace_all_anime_in_folder(anime_folder_path: Path, save_original: bool = True):
-    """
-    Move all the anime in the folder to the Plex library directory
-    With a Plex-appropriate name replacement
-
-    Args:
-        anime_folder_path: pathlib.Path - The path in the pathlib format to the anime folder
-        save_original: bool - default: True - Keep original file when transferring? (Faster if not save)
-    """
-    for anime_file in anime_folder_path.rglob("*"):
-        replace_anime_file(anime_file_path=anime_file, save_original=save_original)
-
-
 if __name__ == "__main__":
-    args = init_args_parser()
-    if args.path.exists():
-        if args.path.is_dir():
-            replace_all_anime_in_folder(anime_folder_path=args.path, save_original=args.save_original)
+    opts = init_args_parser()
+    if opts.path.exists():
+        if opts.path.is_dir():
+            for anime_file in opts.path.rglob("*"):
+                replace_anime_file(anime_file_path=opts.path,
+                                   save_original=opts.save_original,
+                                   use_symlink=opts.use_symlink)
         else:
-            replace_anime_file(anime_file_path=args.path, save_original=args.save_original)
+            replace_anime_file(anime_file_path=opts.path,
+                               save_original=opts.save_original,
+                               use_symlink=opts.use_symlink)
