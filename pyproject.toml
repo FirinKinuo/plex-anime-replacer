@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "plex-anime-replacer"
-version = "0.5.2"
+version = "0.5.3"
 description = "Replacer for names and locations of anime files downloaded from ru-fandub trackers"
 authors = ["Firin Kinuo <deals@fkinuo.ru>"]
 packages = [

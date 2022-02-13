@@ -70,7 +70,7 @@ if __name__ == "__main__":
     if opts.path.exists():
         if opts.path.is_dir():
             for anime_file in opts.path.rglob("*"):
-                replace_anime_file(anime_file_path=opts.path,
+                replace_anime_file(anime_file_path=anime_file,
                                    save_original=opts.save_original,
                                    use_symlink=opts.use_symlink)
         else:
